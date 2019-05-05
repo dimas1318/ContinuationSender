@@ -32,37 +32,37 @@ public class Serializer {
 //        }
 
         Runnable r = (Runnable & Serializable) Serializer::doTask;
-        Class c = r.getClass();
-        try {
-            Method writeReplace = c.getDeclaredMethod("writeReplace");
-            Method readResolve = SerializedLambda.class.getDeclaredMethod("readResolve");
-            writeReplace.setAccessible(true);
-            readResolve.setAccessible(true);
-            // Generate a serializable representation of this lambda
-            Object replacement = null;
-            replacement = writeReplace.invoke(r);
-
-            if (replacement instanceof SerializedLambda) {
-                SerializedLambda l = (SerializedLambda) replacement;
-                // Serialize and deserialize the representation of this lambda
-                // Use readResolve to create a real lambda object from this representation
-                Continuation continuation = new Continuation(CONTINUATION_SCOPE, ((Runnable) readResolve.invoke(l)));
-                new Thread(continuation::run).start();
-
-                KryoContext kryoContext = DefaultKryoContext.newKryoContextFactory(kryo -> {
-                    kryo.register(Continuation.class);
-                    kryo.register(ContinuationScope.class);
-                    kryo.register(Object[].class);
-                    kryo.register(Class.class);
-                    kryo.register(SerializedLambda.class);
-                    kryo.register(ClosureSerializer.Closure.class, new ClosureSerializer());
-                });
-
-                kryoContext.serialze(continuation);
-            }
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+//        Class c = r.getClass();
+//        try {
+//            Method writeReplace = c.getDeclaredMethod("writeReplace");
+//            Method readResolve = SerializedLambda.class.getDeclaredMethod("readResolve");
+//            writeReplace.setAccessible(true);
+//            readResolve.setAccessible(true);
+//            // Generate a serializable representation of this lambda
+//            Object replacement = null;
+//            replacement = writeReplace.invoke(r);
+//
+//            if (replacement instanceof SerializedLambda) {
+//                SerializedLambda l = (SerializedLambda) replacement;
+//                // Serialize and deserialize the representation of this lambda
+//                // Use readResolve to create a real lambda object from this representation
+//                Continuation continuation = new Continuation(CONTINUATION_SCOPE, ((Runnable) readResolve.invoke(l)));
+//                new Thread(continuation::run).start();
+//
+//                KryoContext kryoContext = DefaultKryoContext.newKryoContextFactory(kryo -> {
+//                    kryo.register(Continuation.class);
+//                    kryo.register(ContinuationScope.class);
+//                    kryo.register(Object[].class);
+//                    kryo.register(Class.class);
+//                    kryo.register(SerializedLambda.class);
+//                    kryo.register(ClosureSerializer.Closure.class, new ClosureSerializer());
+//                });
+//
+//                kryoContext.serialze(continuation);
+//            }
+//        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
 
 //        Continuation c = new Continuation(CONTINUATION_SCOPE, r);
 //        Continuation c = new SerCont(CONTINUATION_SCOPE, (Runnable & Serializable) Serializer::doTask);
@@ -84,29 +84,29 @@ public class Serializer {
 ////        c.run();
 //
 //
-//        KryoContext kryoContext = DefaultKryoContext.newKryoContextFactory(kryo -> {
-//            kryo.register(Continuation.class);
-//            kryo.register(ContinuationScope.class);
-//            kryo.register(Object[].class);
-//            kryo.register(Class.class);
-//            kryo.register(SerializedLambda.class);
-//            kryo.register(ClosureSerializer.Closure.class, new ClosureSerializer());
-////            kryo.register(Runnable.class);
-////            kryo.register(MethodHandle.class);
-////            kryo.register(CallSite.class);
-////            kryo.register(MethodType.class);
-////            kryo.register(Serializer.class);
-////            kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
-//        });
-//
-//        kryoContext.serialze(c);
+        KryoContext kryoContext = DefaultKryoContext.newKryoContextFactory(kryo -> {
+            kryo.register(Continuation.class);
+            kryo.register(ContinuationScope.class);
+            kryo.register(Object[].class);
+            kryo.register(Class.class);
+            kryo.register(SerializedLambda.class);
+            kryo.register(ClosureSerializer.Closure.class, new ClosureSerializer());
+//            kryo.register(Runnable.class);
+//            kryo.register(MethodHandle.class);
+//            kryo.register(CallSite.class);
+//            kryo.register(MethodType.class);
+//            kryo.register(Serializer.class);
+//            kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
+        });
+
+        kryoContext.serialze(r);
     }
 
     private static void doTask() {
         System.out.println("Hello koko");
         int x = 2;
         System.out.println(x);
-        yield(CONTINUATION_SCOPE);
+//        yield(CONTINUATION_SCOPE);
         System.out.println("Continue");
 //        x += 1;
 //        System.out.println(x);

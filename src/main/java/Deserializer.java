@@ -22,11 +22,13 @@ public class Deserializer {
             kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
         });
 
-        Continuation recoveredCont = (Continuation) kryoContext.deserialze(Continuation.class, null);
-        final boolean isContinuationDone = recoveredCont.isDone();
-        System.out.println("is Done: " + isContinuationDone);
-        if (!isContinuationDone) {
-            new Thread(recoveredCont::run).start();
-        }
+//        Continuation recoveredCont = (Continuation) kryoContext.deserialze(Continuation.class, null);
+        Runnable r = (Runnable) kryoContext.deserialze(Runnable.class, null);
+        new Thread(r).start();
+//        final boolean isContinuationDone = recoveredCont.isDone();
+//        System.out.println("is Done: " + isContinuationDone);
+//        if (!isContinuationDone) {
+//            new Thread(recoveredCont::run).start();
+//        }
     }
 }
