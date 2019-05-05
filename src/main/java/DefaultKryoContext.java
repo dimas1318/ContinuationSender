@@ -61,7 +61,8 @@ public class DefaultKryoContext implements KryoContext {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        kryo.writeObject(output, obj);
+//        kryo.writeObject(output, obj);
+        kryo.writeClassAndObject(output, obj);
         output.close();
 
         pool.release(kryo);
@@ -84,7 +85,8 @@ public class DefaultKryoContext implements KryoContext {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Object obj = kryo.readObject(input, Continuation.class);
+        Object obj = kryo.readClassAndObject(input);
+//        Object obj = kryo.readObject(input, Continuation.class);
         input.close();
 
         pool.release(kryo);
