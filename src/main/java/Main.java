@@ -4,12 +4,13 @@ import org.objenesis.strategy.StdInstantiatorStrategy;
 import java.io.Serializable;
 import java.lang.invoke.SerializedLambda;
 
+import static java.lang.Continuation.getCurrentContinuation;
 import static java.lang.Continuation.yield;
 
 public class Main {
 
     public static void main(String[] args) {
-//        new Serializer().work();
+        new Serializer().work();
 
         new Deserializer().work();
     }

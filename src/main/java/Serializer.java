@@ -1,15 +1,17 @@
 import com.esotericsoftware.kryo.serializers.ClosureSerializer;
+import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import java.io.Serializable;
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodType;
 import java.lang.invoke.SerializedLambda;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import static java.lang.Continuation.yield;
 
 public class Serializer {
 
-    private static final ContinuationScope CONTINUATION_SCOPE = new ContinuationScope("SERG");
+    public static final ContinuationScope CONTINUATION_SCOPE = new ContinuationScope("SERG");
 
     public void work() {
 
@@ -31,7 +33,7 @@ public class Serializer {
 //            throwable.printStackTrace();
 //        }
 
-        Runnable r = (Runnable & Serializable) Serializer::doTask;
+//        Runnable r = (Runnable & Serializable) Serializer::doTask;
 //        Class c = r.getClass();
 //        try {
 //            Method writeReplace = c.getDeclaredMethod("writeReplace");
@@ -65,7 +67,7 @@ public class Serializer {
 //        }
 
 //        Continuation c = new Continuation(CONTINUATION_SCOPE, r);
-//        Continuation c = new SerCont(CONTINUATION_SCOPE, (Runnable & Serializable) Serializer::doTask);
+        Continuation c = new SerCont(CONTINUATION_SCOPE, (Runnable & Serializable) Serializer::doTask);
 //        Continuation c = new Continuation(CONTINUATION_SCOPE, (Runnable & Serializable) Serializer::doTask);
 //        Continuation c = new Continuation(CONTINUATION_SCOPE, new Runnable() {
 //            @Override
@@ -80,35 +82,36 @@ public class Serializer {
 //            }
 //        });
 
-//        new Thread(c::run).start();
+        new Thread(c::run).start();
 ////        c.run();
 //
 //
         KryoContext kryoContext = DefaultKryoContext.newKryoContextFactory(kryo -> {
             kryo.register(Continuation.class);
+            kryo.register(SerCont.class);
             kryo.register(ContinuationScope.class);
             kryo.register(Object[].class);
             kryo.register(Class.class);
             kryo.register(SerializedLambda.class);
             kryo.register(ClosureSerializer.Closure.class, new ClosureSerializer());
-//            kryo.register(Runnable.class);
-//            kryo.register(MethodHandle.class);
-//            kryo.register(CallSite.class);
-//            kryo.register(MethodType.class);
-//            kryo.register(Serializer.class);
-//            kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
+            kryo.register(Runnable.class);
+            kryo.register(MethodHandle.class);
+            kryo.register(CallSite.class);
+            kryo.register(MethodType.class);
+            kryo.register(Serializer.class);
+            kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
         });
 
-        kryoContext.serialze(r);
+        kryoContext.serialze(c);
     }
 
     private static void doTask() {
         System.out.println("Hello koko");
         int x = 2;
         System.out.println(x);
-//        yield(CONTINUATION_SCOPE);
+        yield(CONTINUATION_SCOPE);
         System.out.println("Continue");
-//        x += 1;
-//        System.out.println(x);
+        x += 1;
+        System.out.println(x);
     }
 }
