@@ -60,7 +60,7 @@ public class Serializer {
 //                    kryo.register(ClosureSerializer.Closure.class, new ClosureSerializer());
 //                });
 //
-//                kryoContext.serialze(continuation);
+//                kryoContext.serialize(continuation);
 //            }
 //        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 //            e.printStackTrace();
@@ -102,7 +102,7 @@ public class Serializer {
             kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
         });
 
-        kryoContext.serialze(c);
+        kryoContext.serialize(c);
     }
 
     private static void doTask() {

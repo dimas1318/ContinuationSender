@@ -10,8 +10,9 @@ import static java.lang.Continuation.yield;
 public class Main {
 
     public static void main(String[] args) {
-        new Serializer().work();
+//        new Serializer().work();
 
+//        while(true){}
         new Deserializer().work();
     }
 //    public static void main(String[] args) {
@@ -53,7 +54,7 @@ public class Main {
 //            kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
 //        });
 //
-//        byte[] bytes = kryoContext.serialze(c);
+//        byte[] bytes = kryoContext.serialize(c);
 //
 ////        try (FileOutputStream fos = new FileOutputStream("/home/dmitry/Desktop/TEST_CONT_SERIALIZE")) {
 ////            fos.write(bytes);
@@ -61,8 +62,8 @@ public class Main {
 ////            e.printStackTrace();
 ////        }
 //
-////        Continuation copy = (Continuation) kryoContext.deserialze(Continuation.class, bytes);
-//        Continuation copy = (Continuation) kryoContext.deserialze(Continuation.class, null);
+////        Continuation copy = (Continuation) kryoContext.deserialize(Continuation.class, bytes);
+//        Continuation copy = (Continuation) kryoContext.deserialize(Continuation.class, null);
 //        System.out.println(c.equals(copy));
 //        copy.run();
 //    }

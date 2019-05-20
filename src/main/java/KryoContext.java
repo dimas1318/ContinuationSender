@@ -1,8 +1,8 @@
 public interface KryoContext {
 
-    byte[] serialze(Object obj);
+    byte[] serialize(Object obj);
 
-    byte[] serialze(Object obj, int bufferSize);
+    byte[] serialize(Object obj, int bufferSize);
 
-    Object deserialze(Class clazz, byte[] serialized);
+    Object deserialize(Class clazz, byte[] serialized);
 }

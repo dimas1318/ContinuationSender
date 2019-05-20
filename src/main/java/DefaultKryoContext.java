@@ -5,7 +5,6 @@ import com.esotericsoftware.kryo.pool.KryoFactory;
 import com.esotericsoftware.kryo.pool.KryoPool;
 
 import java.io.*;
-import java.util.zip.DeflaterOutputStream;
 
 public class DefaultKryoContext implements KryoContext {
 
@@ -41,12 +40,12 @@ public class DefaultKryoContext implements KryoContext {
 
 
     @Override
-    public byte[] serialze(Object obj) {
-        return serialze(obj, DEFAULT_BUFFER);
+    public byte[] serialize(Object obj) {
+        return serialize(obj, DEFAULT_BUFFER);
     }
 
     @Override
-    public byte[] serialze(Object obj, int bufferSize) {
+    public byte[] serialize(Object obj, int bufferSize) {
 
 //        Output output = new Output(new ByteArrayOutputStream(), bufferSize);
 
@@ -72,7 +71,7 @@ public class DefaultKryoContext implements KryoContext {
     }
 
     @Override
-    public Object deserialze(Class clazz, byte[] serialized) {
+    public Object deserialize(Class clazz, byte[] serialized) {
 
         Kryo kryo = pool.borrow();
 
